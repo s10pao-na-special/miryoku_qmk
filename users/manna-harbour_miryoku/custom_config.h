@@ -5,3 +5,10 @@
 
 #pragma once
 
+#define BILATERAL_COMBINATIONS 300
+
+#define TAPPING_TOGGLE 2
+
+#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+#define CAPS_WORD_IDLE_TIMEOUT 0
+
