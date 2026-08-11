@@ -49,6 +49,49 @@ MIRYOKU_LAYER_LIST
 };
 
 
+#ifdef OLED_ENABLE
+
+void render_status(void) {
+    // Host Keyboard Layer Status
+    oled_write_P(PSTR("Layer: "), false);
+    switch (get_highest_layer(layer_state)) {
+#define MIRYOKU_X(LAYER, STRING) case U_##LAYER: oled_write_P(PSTR(#LAYER "\n"), false); break;
+MIRYOKU_LAYER_LIST
+#undef MIRYOKU_X
+    }
+    // Host Keyboard LED Status
+    led_t led_state = host_keyboard_led_state();
+    oled_write_P(led_state.num_lock ? PSTR("NUM ") : PSTR("    "), false);
+    oled_write_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
+    oled_write_P(led_state.scroll_lock ? PSTR("SCR ") : PSTR("    "), false);
+}
+
+static void render_logo(void) {
+    oled_write_P(PSTR("\nFREDERICK ADAN"),false);
+    oled_write_P(PSTR("\nAKA DADDY POGI"),false);
+}
+
+oled_rotation_t oled_init_user(oled_rotation_t rotation) {
+    if (!is_keyboard_master()) {
+        return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
+    }
+    return rotation;
+}
+
+bool oled_task_user(void) {
+    if (is_keyboard_master()) {
+        render_status();  // Renders the current keyboard state (layer, lock, caps, scroll, etc)
+    } else {
+        render_logo();  // Renders a static logo
+        oled_scroll_left();  // Turns on scrolling
+    }
+
+    return false;
+}
+
+#endif
+
+
 // shift functions
 
 const key_override_t capsword_key_override = ko_make_basic(MOD_MASK_SHIFT, CW_TOGG, KC_CAPS);
