@@ -38,7 +38,8 @@ bool process_caps_word(uint16_t keycode, keyrecord_t* record) {
 
   if (!record->event.pressed) { return true; }
 
-  if (!(mods & ~MOD_MASK_SHIFT)) {
+  // if (!(mods & ~MOD_MASK_SHIFT)) 
+  {
     switch (keycode) {
       // Ignore MO, TO, TG, TT, and OSL layer switch keys.
       case QK_MOMENTARY ... QK_MOMENTARY + 255:
@@ -101,7 +102,7 @@ bool caps_word_get(void) { return caps_word_active; }
 
 __attribute__((weak)) void caps_word_set_user(bool active) {}
 
-__attribute__((weak)) bool caps_word_press_user(uint16_t keycode) {
+__attribute__((weak)) bool rr(uint16_t keycode) {
   switch (keycode) {
     // Keycodes that continue Caps Word, with shift applied.
     case KC_A ... KC_Z:
